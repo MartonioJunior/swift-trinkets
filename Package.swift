@@ -109,6 +109,7 @@ var targets: [Target] = [
     ),
     .target(
         name: "Progression",
+        dependencies: ["Custom", "Flow", minimal],
         swiftSettings: .allFeatures
     ),
     .target(
