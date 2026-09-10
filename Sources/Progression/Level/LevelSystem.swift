@@ -48,33 +48,26 @@ public extension LevelSystem where Level: Hashable, XP: Comparable {
         }
     }
 
-    static func cumulative(
-        from startLevel: Level,
-        to endLevel: Level,
-        by step: Level.Stride,
-        reduce reducer: (XP?, XP) -> XP,
-        _ grade: Rate<Level, XP>,
-    ) -> Self where Level: Metronome & Comparable {
-        var accumulatedXP: XP?
-        var table = [Level: XP]()
+    // static func cumulative(
+    //     from startLevel: Level,
+    //     to endLevel: Level,
+    //     by step: Level.Stride,
+    //     reduce reducer: (XP?, XP) -> XP,
+    //     _ grade: Rate<Level, XP>,
+    // ) -> Self where Level: Strideable & Comparable {
+    //     var accumulatedXP: XP?
+    //     var table = [Level: XP]()
 
-        let xpTable: [Level: XP] = .init(uniqueKeysWithValues: grade.sample(startLevel.stride(to: endLevel, by: step)))
+    //     let xpTable: [Level: XP] = .init(uniqueKeysWithValues: stride(from: startLevel, to: endLevel, by: step).map(grade.run))
 
-        table = xpTable.reduce(into: table) {
-            let requiredXP = reducer(accumulatedXP, $1.value)
-            $0.updateValue(requiredXP, forKey: $1.key)
-            accumulatedXP = requiredXP
-        }
+    //     table = xpTable.reduce(into: table) {
+    //         let requiredXP = reducer(accumulatedXP, $1.value)
+    //         $0.updateValue(requiredXP, forKey: $1.key)
+    //         accumulatedXP = requiredXP
+    //     }
 
-        return .table(table, startXP: table[startLevel]!, startLevel: startLevel)
-    }
-}
-
-// MARK: Self.Level: Metronome
-public extension LevelSystem where Level: Metronome, Level.Stride == XP {
-    func level(for xp: XP, startingFrom startLevel: Level) -> Level {
-        startLevel.advanced(by: xp)
-    }
+    //     return .table(table, startXP: table[startLevel]!, startLevel: startLevel)
+    // }
 }
 
 // MARK: Self.Level: Milestone
@@ -94,14 +87,18 @@ public extension LevelSystem where Level: Milestone & Comparable, XP == Level.Re
     }
 }
 
-// MARK: Self.Level: Stamp
-public extension LevelSystem where Level: Stamp, Level.Distance == XP {
+// MARK: Self.Level: Strideable
+public extension LevelSystem where Level: Strideable, Level.Stride == XP {
+    func level(for xp: XP, startingFrom startLevel: Level) -> Level {
+        startLevel.advanced(by: xp)
+    }
+
     func requiredXP(from startLevel: Level, to targetLevel: Level) -> XP {
         startLevel.distance(to: targetLevel)
     }
 }
 
-public extension LevelSystem where Level: Metronome & Stamp, Level.Stride == XP, Level.Distance == XP, XP: AdditiveArithmetic {
+public extension LevelSystem where Level: Strideable, Level.Stride == XP, XP: AdditiveArithmetic {
     static func linear(_ f: @escaping (XP) -> Level.Stride, startLevel: Level, startXP: XP) -> Self {
         .init { xp in
             startLevel.advanced(by: f(xp))
