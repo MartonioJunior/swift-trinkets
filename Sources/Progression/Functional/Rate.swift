@@ -61,7 +61,7 @@ public typealias Logic<Subject> = Rate<Subject, Bool>
 
 public extension Rate where Grade == Bool {
     func check(_ predicate: @escaping (Grade) -> Bool) -> Self {
-        .closure(pipe(predicate))
+        .closure(map(predicate))
     }
 
     static func contains<Feature>(
