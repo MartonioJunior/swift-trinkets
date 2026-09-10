@@ -37,7 +37,6 @@ public struct Rule<Subject, Target, Grade> {
 }
 
 // MARK: Self.Grade == Bool
-
 public extension Rule where Grade == Bool {
     var inverted: Self {
         .init(grade.toggle().asRate, action)
