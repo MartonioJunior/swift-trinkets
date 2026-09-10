@@ -6,13 +6,17 @@
 //
 
 public protocol Tracker {
+    /// Type of milestone being tracked.
     associatedtype Element: Milestone
+    /// Milestone score.
     associatedtype Weight
-
+    /// List of milestones.
     typealias Milestones = [Element]
-
+    /// Milestones that are active in this type.
     var milestones: Milestones { get }
-
+    /// Score for a given milestone.
+    /// - Parameter milestone: Milestone to be checked.
+    /// - Returns: `Weight` for the given milestone.
     subscript(_ milestone: Element) -> Weight { get set }
 }
 
