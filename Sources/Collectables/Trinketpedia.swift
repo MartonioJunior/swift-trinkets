@@ -79,7 +79,7 @@ public struct Trinketpedia {
     }
     /// Erases all entries for a given type.
     public mutating func removeDatabase<T: Trinket>(_: T.Type) {
-        databases.remove(T.registryKey)
+        databases.removeValue(forKey: T.registryKey)
     }
     /// Erases all entries in the Trinketpedia.
     public mutating func removeAll() {
