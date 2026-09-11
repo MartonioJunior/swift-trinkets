@@ -99,4 +99,9 @@ public extension Measurement where UnitType: Quantifiable, Value: FloatingPoint 
     ) -> Measurement<FractionUnit<UnitType, T>, Value> {
         lhs.per(rhs)
     }
+    /// Flips around a fraction unit.
+    /// - Returns: Flipped fraction.
+    func flipped<A, B>() -> Measurement<FractionUnit<B, A>, Value> where UnitType == FractionUnit<A, B> {
+        .init(1 / value, unit.flipped)
+    }
 }
