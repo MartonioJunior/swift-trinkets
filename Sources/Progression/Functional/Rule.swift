@@ -5,6 +5,7 @@
 //  Created by Martônio Júnior on 08/11/2025.
 //
 
+import Custom
 import Functional
 
 public typealias Gate<T: Tracker, Grade> = RuleModify<T, Grade>
@@ -33,6 +34,13 @@ public struct Rule<Subject, Target, Grade> {
         let result = grade(subject)
         action(&target, result)
         return result
+    }
+}
+
+// MARK: Self: Modifier
+extension Rule: Modifier where Subject == Target {
+    public func apply(to target: inout Subject) -> Grade {
+        apply(to: &target, basedOn: target)
     }
 }
 
