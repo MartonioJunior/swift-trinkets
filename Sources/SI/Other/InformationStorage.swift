@@ -57,5 +57,5 @@ public extension Tagged where Tag == InformationStorage.Nibbles, RawValue: Unsig
 }
 
 public extension Tagged where Tag == InformationStorage, RawValue: UnsignedInteger {
-    var bytes: Tagged<InformationStorage.Nibbles, RawValue> { .init(rawValue / 4) }
+    var nibbles: Tagged<InformationStorage.Nibbles, RawValue> { .init(rawValue / 4) }
 }
