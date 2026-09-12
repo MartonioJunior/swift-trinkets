@@ -5,6 +5,8 @@
 //  Created by Martônio Júnior on 09/02/25.
 //
 
+/// Short-hand alias for defining the efficiency of a conversion.
+public typealias Efficiency<Input, Output> = FractionUnit<Output, Input>
 /// Division between two units.
 /// - A: Numerator unit.
 /// - B: Denominator unit.
