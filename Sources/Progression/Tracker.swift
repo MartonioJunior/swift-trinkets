@@ -5,14 +5,15 @@
 //  Created by Martônio Júnior on 09/11/2025.
 //
 
+/// Data structure that can track progress using weights.
 public protocol Tracker {
     /// Type of milestone being tracked.
-    associatedtype Element: Milestone
+    typealias Element = Milestones.Element
     /// Milestone score.
     associatedtype Weight
-    /// List of milestones.
-    typealias Milestones = [Element]
-    /// Milestones that are active in this type.
+    /// Type representing all active milestones.
+    associatedtype Milestones: Sequence
+    /// Milestones that are active in this tracker.
     var milestones: Milestones { get }
     /// Score for a given milestone.
     /// - Parameter milestone: Milestone to be checked.
