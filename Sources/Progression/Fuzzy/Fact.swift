@@ -5,8 +5,6 @@
 //  Created by Martônio Júnior on 08/11/2025.
 //
 
-import Custom
-
 public struct Fact<Value, Weight: Numeric> {
     // MARK: Variables
     var value: Value
@@ -21,11 +19,9 @@ public struct Fact<Value, Weight: Numeric> {
         self.value = value
         self.weight = graded
     }
-}
 
-// MARK: Self: Appendable
-extension Fact: Appendable {
-    public func appending(_ value: Weight) -> Self {
+    // MARK: Methods
+    public func asserting(_ value: Weight) -> Self {
         .init(self.value, graded: weight + value)
     }
 }
