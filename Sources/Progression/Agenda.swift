@@ -25,6 +25,10 @@ public struct Agenda<T> {
     }
 
     // MARK: Methods
+    public func appending(_ value: T) -> Self {
+        .init(planned + CollectionOfOne(Entry(element: value)), executed: executed)
+    }
+
     mutating func clear() {
         planned = []
         executed = []
@@ -80,15 +84,6 @@ extension Agenda.Entry: Comparable {
     }
 }
 
-// MARK: Self: Appendable
-import Custom
-
-extension Agenda: Appendable {
-    public func appending(_ value: T) -> Self {
-        .init(planned + CollectionOfOne(Entry(element: value)), executed: executed)
-    }
-}
-
 // MARK: Self: ExpressibleByArrayLiteral
 extension Agenda: ExpressibleByArrayLiteral {
     public init(arrayLiteral elements: Entry...) {
@@ -96,9 +91,9 @@ extension Agenda: ExpressibleByArrayLiteral {
     }
 }
 
-// MARK: Self: Removable
-extension Agenda: Removable where T: Equatable {
-    public func removing(_ value: T) -> Agenda {
+// MARK: Self.T: Equatable
+public extension Agenda where T: Equatable {
+    func removing(_ value: T) -> Self {
         .init(planned.filter { $0.element != value }, executed: executed.filter { $0.element != value })
     }
 }
