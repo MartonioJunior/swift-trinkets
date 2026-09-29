@@ -7,35 +7,50 @@
 
 import Functional
 
-public typealias UnlockableReward<Subject, Value> = Reward<Subject, Lock<Value>>
-
-public struct Reward<Subject, Contents> {
+public typealias UnlockableReward<Content, Subject> = Reward<Subject, Lock<Content>>
+/// Content that is given out to a subject as a compensation for fulfilling certain criteria.
+/// - Content: Contents that compose this reward.
+/// - Subject: Piece of game state evaluated to access this reward.
+public struct Reward<Content, Subject> {
     // MARK: Variables
-    var contents: Contents
+    /// List of contents that compose this reward.
+    var contents: Content
+    /// Requirement for accessing this content.
     var accessLogic: Logic<Subject>
-
     // MARK: Initializers
-    public init(_ contents: Contents, when accessLogic: Logic<Subject> = .closure(.always())) {
+    /// Creates a new reward.
+    /// - Parameters:
+    ///   - contents: List of contents that compose this reward.
+    ///   - accessLogic: Requirement for accessing this content.
+    ///
+    public init(_ contents: Content, when accessLogic: Logic<Subject> = .closure(.always())) {
         self.contents = contents
         self.accessLogic = accessLogic
     }
-
     // MARK: Methods
-    public func obtainable(by subject: Subject) -> Bool {
+    /// Evaluates whether a subject can access this reward.
+    /// - Parameter subject: State to be evaluated.
+    /// - Returns: `true` is access is allowed, `false` otherwise.
+    public func isObtainable(by subject: Subject) -> Bool {
         accessLogic(subject)
     }
-
-    public func reward(for subject: Subject) -> Contents? {
+    /// Reward available for a given subject.
+    /// - Parameter subject: State to be evaluated.
+    /// - Returns: Reward for the subject, `nil` when access is denied.
+    public func reward(for subject: Subject) -> Content? {
         accessLogic(subject) ? contents : nil
     }
-
-    public func temporaryAccess(_ f: @escaping (Contents) throws -> Void) rethrows {
+    /// Provides temporary access to a reward.
+    /// - Parameter f: Closure with access to a reward.
+    /// - Throws: `E` when the closure fails to execute.
+    public func temporaryAccess<E: Error>(_ f: @escaping (Content) throws(E) -> Void) throws(E) {
         try f(contents)
     }
 }
 
 // MARK: Self: Unlockable
 extension Reward: Unlockable {
+    // swiftlint:disable:next missing_docs
     public mutating func lock(using logic: Logic<Subject> = .closure(.never())) {
         self.accessLogic = logic
     }
