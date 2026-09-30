@@ -48,25 +48,25 @@ public struct RuleSystem<Context, Element: Equatable, Weight: Numeric> {
 
 // MARK: Self: Tracker
 extension RuleSystem: Tracker where Weight: Numeric & Comparable {
-    /// List of milestones achieved/facts asserted in the rule system.
-    public var milestones: [Element] {
+    /// List of facts asserted in the rule system.
+    public var activeElements: [Element] {
         facts.filter { $0.weight >= 1 }.map(\.value)
     }
     /// Returns the weight for a given fact.
-    /// - Parameter milestone: Milestone or fact to be evaluated.
+    /// - Parameter element: Value representing a fact.
     /// - Returns: `Weight` for the given fact, `.zero` if the fact is not part of the rule system.
-    public subscript(_ milestone: Element) -> Weight {
+    public subscript(check element: Element) -> Weight {
         get {
-            facts.first { $0.value == milestone }?.weight ?? .zero
+            facts.first { $0.value == element }?.weight ?? .zero
         } set {
-            guard let index = facts.firstIndex(where: { $0.value == milestone }) else { return }
+            guard let index = facts.firstIndex(where: { $0.value == element }) else { return }
 
             guard newValue > 0 else {
-                facts.removeAll { $0.value == milestone }
+                facts.removeAll { $0.value == element }
                 return
             }
 
-            facts[index] = Fact(milestone, graded: max(newValue, 1))
+            facts[index] = Fact(element, graded: max(newValue, 1))
         }
     }
 }

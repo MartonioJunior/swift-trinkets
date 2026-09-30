@@ -17,12 +17,12 @@ public extension Rule where Subject == Target, Subject: Tracker, Subject.Weight 
         lock: @autoclosure @escaping () -> Logic<Subject> = .closure(.never())
     ) -> Self {
         .init {
-            let completed = $0[milestone]
+            let completed = $0[check: milestone]
             let stayCompleted = completed && validate()($0)
             let stayLocked = !completed && lock()($0)
             return (stayCompleted || stayLocked) ? completed : !completed
         } action: {
-            $0[milestone] = $1
+            $0[check: milestone] = $1
         }
     }
 }

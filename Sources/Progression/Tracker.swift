@@ -7,18 +7,18 @@
 
 /// Data structure that can track progress using weights.
 public protocol Tracker {
-    /// Type of milestone being tracked.
-    typealias Element = Milestones.Element
-    /// Milestone score.
+    /// Type of element being tracked.
+    typealias Element = Checks.Element
+    /// Score associated with a given element.
     associatedtype Weight
-    /// Type representing all active milestones.
-    associatedtype Milestones: Sequence
-    /// Milestones that are active in this tracker.
-    var milestones: Milestones { get }
-    /// Score for a given milestone.
-    /// - Parameter milestone: Milestone to be checked.
-    /// - Returns: `Weight` for the given milestone.
-    subscript(_ milestone: Element) -> Weight { get set }
+    /// Type representing all active elements.
+    associatedtype Checks: Sequence
+    /// Elements currently active in this tracker based on their weights.
+    var activeElements: Checks { get }
+    /// Score for a given element.
+    /// - Parameter element: Element to be checked.
+    /// - Returns: `Weight` for the given element.
+    subscript(check element: Element) -> Weight { get set }
 }
 
 // MARK: Weight: AdditiveArithmetic
@@ -29,7 +29,7 @@ public extension Tracker where Weight: AdditiveArithmetic {
     ///   - weight: Amount to be added.
     ///
     mutating func assert(_ value: Element, grade weight: Weight) {
-        self[value] += weight
+        self[check: value] += weight
     }
     /// Reduces weight for a given element.
     /// - Parameters:
@@ -37,7 +37,7 @@ public extension Tracker where Weight: AdditiveArithmetic {
     ///   - weight: Amount to be removed.
     ///
     mutating func retract(_ value: Element, grade weight: Weight) {
-        self[value] -= weight
+        self[check: value] -= weight
     }
 }
 
@@ -46,12 +46,12 @@ public extension Tracker where Weight == Bool {
     /// Marks an element as completed.
     /// - Parameter value: Element to be marked.
     mutating func complete(_ value: Element) {
-        self[value] = true
+        self[check: value] = true
     }
     /// Erases an element's completion status.
     /// - Parameter value: Element to be erased.
     mutating func reset(_ value: Element) {
-        self[value] = false
+        self[check: value] = false
     }
 }
 

@@ -33,8 +33,8 @@ public extension Appraise {
         .f(closure().run)
     }
 
-    static func tracker<T: Tracker>(_ tracker: T) -> Self where Progress == T.Milestones {
-        .init { _ in tracker.milestones }
+    static func tracker<T: Tracker>(_ tracker: T) -> Self where Progress == T.Checks {
+        .init { _ in tracker.activeElements }
     }
 }
 
@@ -97,7 +97,7 @@ public extension Appraise where Subject: Tracker {
     static func track(
         _ milestone: Subject.Element
     ) -> Self where Progress == Subject.Weight {
-        .init { $0[milestone] }
+        .init { $0[check: milestone] }
     }
 }
 
@@ -105,27 +105,27 @@ public extension Appraise where Subject: Tracker, Progress == Subject.Weight, Pr
     static func trackAny(
         _ elements: some Sequence<Subject.Element>
     ) -> Self {
-        .closure(.any(elements) { $0[$1] })
+        .closure(.any(elements) { $0[check: $1] })
     }
 
     static func trackAll(
         _ elements: some Sequence<Subject.Element>
     ) -> Self {
-        .closure(.all(elements) { $0[$1] })
+        .closure(.all(elements) { $0[check: $1] })
     }
 
     static func || (
         lhs: Self,
         rhs: Subject.Element
     ) -> Self {
-        .init { lhs.evaluate($0) || $0[rhs] }
+        .init { lhs.evaluate($0) || $0[check: rhs] }
     }
 
     static func && (
         lhs: Self,
         rhs: Subject.Element
     ) -> Self {
-        .init { lhs.evaluate($0) && $0[rhs] }
+        .init { lhs.evaluate($0) && $0[check: rhs] }
     }
 }
 
@@ -133,7 +133,7 @@ public extension Appraise where Subject: Tracker, Subject.Weight == Bool, Progre
     static func count(
         _ elements: some Sequence<Subject.Element>
     ) -> Self {
-        .closure(.count(elements) { $0[$1] })
+        .closure(.count(elements) { $0[check: $1] })
     }
 }
 

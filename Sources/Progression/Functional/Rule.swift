@@ -82,7 +82,7 @@ public extension Rule where Subject == Target, Subject: Tracker, Subject.Weight 
         _ grade: @autoclosure @escaping () -> Appraise<Subject, Grade>
     ) -> Self {
         .init(grade()) {
-            $0[milestone] = $1
+            $0[check: milestone] = $1
         }
     }
 }
