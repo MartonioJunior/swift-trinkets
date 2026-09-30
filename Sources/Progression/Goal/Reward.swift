@@ -61,6 +61,14 @@ extension Reward: Equatable where Contents: Equatable {
     }
 }
 
+// MARK: Self: Progression
+extension Reward: ProgressionModel {
+    // swiftlint:disable:next missing_docs
+    public func progress(for subject: Subject) -> Bool {
+        accessLogic(subject)
+    }
+}
+
 // MARK: Self: Unlockable
 extension Reward: Unlockable {
     // swiftlint:disable:next missing_docs

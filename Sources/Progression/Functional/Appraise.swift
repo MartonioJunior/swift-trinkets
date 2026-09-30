@@ -38,6 +38,14 @@ public extension Appraise {
     }
 }
 
+// MARK: Self: Progression
+extension Appraise: ProgressionModel {
+    // swiftlint:disable:next missing_docs
+    public func progress(for subject: Subject) -> Progress {
+        evaluate(subject)
+    }
+}
+
 // MARK: Self: SyncClosure
 extension Appraise: SyncClosure {
     // swiftlint:disable:next missing_docs

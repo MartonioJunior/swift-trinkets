@@ -52,5 +52,5 @@ extension Turn: Strideable {
 // MARK: TurnBased (EX)
 public extension TurnBased {
     /// Alias for a turn.
-    typealias Turn = Progression.Turn<Self>
+    typealias Turn = Progression::Turn<Self>
 }

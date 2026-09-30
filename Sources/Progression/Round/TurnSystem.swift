@@ -33,3 +33,9 @@ public struct TurnSystem<Model: TurnBased> {
         instant = core.nextTurn(after: instant)
     }
 }
+
+// MARK: Self: Progression
+extension TurnSystem: ProgressionModel {
+    // swiftlint:disable:next missing_docs
+    public func progress(for _: Void) -> Turn<Model> { instant }
+}

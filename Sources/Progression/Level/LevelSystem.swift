@@ -34,6 +34,17 @@ public struct LevelSystem<Level, XP> {
     public func requiredXP(to level: Level) -> XP { appraiseLevel(level) }
 }
 
+// MARK: Self: Progression
+extension LevelSystem: ProgressionModel where XP: AdditiveArithmetic {
+    public func progress(for xp: XP) -> LevelProgress<Level, XP> {
+        let currentLevel = level(for: xp)
+        let requiredAmount = requiredXP(to: currentLevel)
+        let currentExpOnLevel = xp - requiredAmount
+
+        return .init(level: currentLevel, xp: currentExpOnLevel)
+    }
+}
+
 // MARK: Self.Level: Hashable
 public extension LevelSystem where Level: Hashable, XP: Comparable {
     static func table(_ xpTable: [Level: XP], startXP: XP, startLevel: Level) -> Self {
@@ -79,8 +90,20 @@ public extension LevelSystem where XP: AdditiveArithmetic {
         appraiseXP(appraiseLevel(startLevel) + xp)
     }
 
+    func optimize(_ data: Progress) -> Progress {
+        self.progress(for: xp(for: data))
+    }
+
+    func remainingXP(_ progress: Progress, to targetLevel: Level) -> XP {
+        requiredXP(to: targetLevel) - xp(for: progress)
+    }
+
     @_disfavoredOverload
     func requiredXP(from startLevel: Level, to targetLevel: Level) -> XP {
         appraiseLevel(targetLevel) - appraiseLevel(startLevel)
+    }
+
+    func xp(for progress: Progress) -> XP {
+        requiredXP(to: progress.level) + progress.xp
     }
 }

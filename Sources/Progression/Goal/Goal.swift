@@ -33,6 +33,14 @@ public struct Goal<Subject, Progress> {
     }
 }
 
+// MARK: Self: Progression
+extension Goal: ProgressionModel {
+    // swiftlint:disable:next missing_docs
+    public func progress(for subject: Subject) -> Progress {
+        progress.progress(for: subject)
+    }
+}
+
 // MARK: Appraise (EX)
 public extension Appraise {
     func goal(

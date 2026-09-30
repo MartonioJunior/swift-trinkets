@@ -30,6 +30,14 @@ extension Mission: Equatable where Contents: Equatable {
     }
 }
 
+// MARK: Self: Progression
+extension Mission: ProgressionModel {
+    // swiftlint:disable:next missing_docs
+    public func progress(for subject: Subject) -> Progress {
+        goal.progress(for: subject)
+    }
+}
+
 // MARK: Goal (EX)
 public extension Goal {
     func asMission<Contents>(
