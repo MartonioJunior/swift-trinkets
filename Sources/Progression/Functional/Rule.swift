@@ -13,20 +13,20 @@ public typealias RuleModify<Target, Output> = Rule<Target, Target, Output>
 
 public struct Rule<Subject, Target, Grade> {
     // MARK: Variables
-    var grade: Rate<Subject, Grade>
+    var grade: Appraise<Subject, Grade>
     var action: (inout Target, Grade) -> Void
 
     // MARK: Initializers
-    public init(_ grade: Rate<Subject, Grade>, _ action: @escaping (inout Target, Grade) -> Void) {
+    public init(_ grade: Appraise<Subject, Grade>, _ action: @escaping (inout Target, Grade) -> Void) {
         self.grade = grade
         self.action = action
     }
 
     public init(
-        _ rating: @escaping (Subject) -> Grade,
+        _ evaluation: @escaping (Subject) -> Grade,
         action: @escaping (inout Target, Grade) -> Void
     ) {
-        self.init(Rate(evaluating: rating), action)
+        self.init(Appraise(evaluation: evaluation), action)
     }
 
     // MARK: Methods
@@ -47,7 +47,7 @@ extension Rule: Modifier where Subject == Target {
 // MARK: Self.Grade == Bool
 public extension Rule where Grade == Bool {
     var inverted: Self {
-        .init(grade.toggle().asRate, action)
+        .init(grade.toggle().appraise, action)
     }
 
     static func completed<M: Milestone>(
@@ -79,7 +79,7 @@ public extension Rule where Subject == Target {}
 public extension Rule where Subject == Target, Subject: Tracker, Subject.Weight == Grade {
     static func gate(
         for milestone: Subject.Element,
-        _ grade: @autoclosure @escaping () -> Rate<Subject, Grade>
+        _ grade: @autoclosure @escaping () -> Appraise<Subject, Grade>
     ) -> Self {
         .init(grade()) {
             $0[milestone] = $1
