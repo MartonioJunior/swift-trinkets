@@ -9,18 +9,18 @@ import Collectables
 import Progression
 
 // MARK: Subject == Trinketpedia
-public extension Rate where Subject == Trinketpedia {
-    static func trinket<T>(_ key: TrinketKey<T>) -> Self where Grade == T? {
+public extension Appraise where Subject == Trinketpedia {
+    static func trinket<T>(_ key: TrinketKey<T>) -> Self where Progress == T? {
         .init { $0[key] }
     }
 }
 
-public extension Rate where Subject == Trinketpedia, Grade == Bool {
+public extension Appraise where Subject == Trinketpedia, Progress == Bool {
     static func found<T>(_ key: TrinketKey<T>) -> Self {
-        .closure(Rate<Subject, T?>.trinket(key).isSome())
+        .closure(Appraise<Subject, T?>.trinket(key).isSome())
     }
 
     static func missing<T>(_ key: TrinketKey<T>) -> Self {
-        .closure(Rate<Subject, T?>.trinket(key).isNone())
+        .closure(Appraise<Subject, T?>.trinket(key).isNone())
     }
 }

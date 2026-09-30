@@ -10,7 +10,7 @@ import Progression
 import TrinketsUnits
 
 // MARK: Self.Subject: Catalogue
-public extension Rate where Subject: Catalogue, Grade == Bool {
+public extension Appraise where Subject: Catalogue, Progress == Bool {
     static func collected(
         @ItemBuilder<Subject.Item> _ contents: @escaping () -> [Measurement<Subject.Item, Tally>]
     ) -> Self where Subject.Item: Equatable {
