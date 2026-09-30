@@ -5,59 +5,40 @@
 //  Created by Martônio Júnior on 29/10/2025.
 //
 
-public struct Mission<M: Milestone> where M.Subject: Tracker {
+public struct Mission<Contents, Subject, Progress> {
     // MARK: Variables
-    var milestone: M
-    var logic: Logic<M.Subject>
-
-    // MARK: Initializers
-    public init(
-        _ milestone: M,
-        logic: Logic<M.Subject>
-    ) {
-        self.milestone = milestone
-        self.logic = logic
-    }
-
-    public init(
-        _ milestone: M,
-        completed: @escaping (M.Subject) -> Bool
-    ) {
-        self.milestone = milestone
-        self.logic = Logic(evaluating: completed)
-    }
+    var reward: Reward<Contents, Subject>
+    var goal: Goal<Subject, Progress>
 
     // MARK: Methods
-    public func milestone(for subject: M.Subject) -> M? {
-        wasCompleted(by: subject) ? milestone : nil
+    public func wasCompleted(by subject: Subject) -> Bool {
+        goal.wasCompleted(by: subject)
     }
 
-    public func wasCompleted(by subject: M.Subject) -> Bool {
-        logic(subject)
+    public func reward(for subject: Subject) -> Contents? {
+        guard wasCompleted(by: subject) else { return nil }
+
+        return reward.reward(for: subject)
     }
 }
 
 // MARK: Self: Equatable
-extension Mission: Equatable {
+extension Mission: Equatable where Contents: Equatable {
+    // swiftlint:disable:next missing_docs
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.milestone == rhs.milestone
+        lhs.reward == rhs.reward
     }
 }
 
-// MARK: Milestone (EX)
-public extension Milestone {
-    func mission(
-        _ logic: Logic<Subject>
-    ) -> Mission<Self> where Subject: Tracker {
-        .init(self, logic: logic)
-    }
-}
-
-// MARK: Rate (EX)
-public extension Rate where Grade == Bool {
-    func mission<M: Milestone>(
-        _ milestone: M
-    ) -> Mission<M> where M.Subject: Tracker, Subject == M.Subject {
-        .init(milestone, logic: self)
+// MARK: Goal (EX)
+public extension Goal {
+    func asMission<Contents>(
+        rewarding contents: Contents,
+        access: @escaping (Subject) -> Bool = { _ in true }
+    ) -> Mission<Contents, Subject, Progress> {
+        .init(
+            reward: .init(contents, when: .init(evaluation: access)),
+            goal: self
+        )
     }
 }
