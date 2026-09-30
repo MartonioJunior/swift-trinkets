@@ -13,15 +13,15 @@ public struct LevelProgress<Level, XP> {
 
 // MARK: LevelSystem (EX)
 public extension LevelSystem {
-    typealias Stats = LevelProgress<Level, XP>
+    typealias Progress = LevelProgress<Level, XP>
 }
 
 public extension LevelSystem where XP: AdditiveArithmetic {
-    func optimize(_ progress: Stats) -> Stats {
+    func optimize(_ progress: Progress) -> Progress {
         stats(for: xp(for: progress))
     }
 
-    func stats(for xp: XP) -> Stats {
+    func stats(for xp: XP) -> Progress {
         let currentLevel = level(for: xp)
         let requiredAmount = requiredXP(to: currentLevel)
         let currentExpOnLevel = xp - requiredAmount
@@ -29,11 +29,11 @@ public extension LevelSystem where XP: AdditiveArithmetic {
         return .init(level: currentLevel, xp: currentExpOnLevel)
     }
 
-    func remainingXP(_ progress: Stats, to targetLevel: Level) -> XP {
+    func remainingXP(_ progress: Progress, to targetLevel: Level) -> XP {
         requiredXP(to: targetLevel) - xp(for: progress)
     }
 
-    func xp(for progress: Stats) -> XP {
+    func xp(for progress: Progress) -> XP {
         requiredXP(to: progress.level) + progress.xp
     }
 }
