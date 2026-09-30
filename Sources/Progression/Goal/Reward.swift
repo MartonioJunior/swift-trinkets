@@ -7,7 +7,7 @@
 
 import Functional
 
-public typealias UnlockableReward<Content, Subject> = Reward<Subject, Lock<Content>>
+public typealias UnlockableReward<Contents, Subject> = Reward<Subject, Locked<Contents>>
 /// Content that is given out to a subject as a compensation for fulfilling certain criteria.
 /// - Content: Contents that compose this reward.
 /// - Subject: Piece of game state evaluated to access this reward.
