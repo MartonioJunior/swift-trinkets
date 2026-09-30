@@ -65,4 +65,12 @@ public extension Locked where Subject == Void {
         self.writeLock = writeLock
         self.contents = wrappedValue
     }
+
+    mutating func mutateContents<E: Error>(
+        _ f: (inout Contents) throws(E) -> Void
+    ) throws(E) {
+        guard writeLock(()) else { return }
+
+        try f(&contents)
+    }
 }
