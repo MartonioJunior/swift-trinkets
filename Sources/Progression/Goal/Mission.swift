@@ -14,12 +14,6 @@ public struct Mission<Contents, Subject, Progress> {
     public func wasCompleted(by subject: Subject) -> Bool {
         goal.wasCompleted(by: subject)
     }
-
-    public func reward(for subject: Subject) -> Contents? {
-        guard wasCompleted(by: subject) else { return nil }
-
-        return reward.contents(for: subject)
-    }
 }
 
 // MARK: Self: Equatable
@@ -34,14 +28,16 @@ extension Mission: Equatable where Contents: Equatable {
 extension Mission: ProgressionContent {
     // swiftlint:disable:next missing_docs
     public func contents(for subject: Subject) -> Contents? {
-        reward.contents(for: subject)
+        guard wasCompleted(by: subject) else { return nil }
+
+        return reward.contents(for: subject)
     }
 }
 
 // MARK: Self: Progression
 extension Mission: ProgressionModel {
     // swiftlint:disable:next missing_docs
-    public func progress(for subject: Subject) -> Progress {
+    public func progress(for subject: Subject) -> GoalProgress<Progress> {
         goal.progress(for: subject)
     }
 }

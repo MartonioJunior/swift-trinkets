@@ -7,37 +7,38 @@
 
 public struct Goal<Subject, Progress> {
     // MARK: Variables
-    var progress: Appraise<Subject, Progress>
+    var progression: Appraise<Subject, Progress>
     var condition: Requirement<Subject, Progress>
 
     // MARK: Initializers
     public init(
-        progress: Appraise<Subject, Progress>,
-        completed: Requirement<Subject, Progress>
+        progression: Appraise<Subject, Progress>,
+        condition: Requirement<Subject, Progress>
     ) {
-        self.progress = progress
-        self.condition = completed
+        self.progression = progression
+        self.condition = condition
     }
 
     public init(
         _ progress: @escaping (Subject) -> Progress,
         completed: @escaping (Subject, Progress) -> Bool
     ) {
-        self.progress = Appraise(evaluation: progress)
+        self.progression = Appraise(evaluation: progress)
         self.condition = Requirement(completed: completed)
     }
 
     // MARK: Methods
     public func wasCompleted(by subject: Subject) -> Bool {
-        condition(subject, progress(subject))
+        condition(subject, progression(subject))
     }
 }
 
 // MARK: Self: Progression
 extension Goal: ProgressionModel {
     // swiftlint:disable:next missing_docs
-    public func progress(for subject: Subject) -> Progress {
-        progress.progress(for: subject)
+    public func progress(for subject: Subject) -> GoalProgress<Progress> {
+        let x = progression.progress(for: subject)
+        return .init(x, completed: condition(subject, x))
     }
 }
 
@@ -46,6 +47,6 @@ public extension Appraise {
     func goal(
         _ completed: @escaping (Subject, Progress) -> Bool
     ) -> Goal<Subject, Progress> {
-        .init(progress: self, completed: Requirement(completed: completed))
+        .init(progression: self, condition: Requirement(completed: completed))
     }
 }
