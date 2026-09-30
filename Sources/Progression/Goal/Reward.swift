@@ -11,10 +11,10 @@ public typealias UnlockableReward<Content, Subject> = Reward<Subject, Lock<Conte
 /// Content that is given out to a subject as a compensation for fulfilling certain criteria.
 /// - Content: Contents that compose this reward.
 /// - Subject: Piece of game state evaluated to access this reward.
-public struct Reward<Content, Subject> {
+public struct Reward<Contents, Subject> {
     // MARK: Variables
     /// List of contents that compose this reward.
-    var contents: Content
+    var contents: Contents
     /// Requirement for accessing this content.
     var accessLogic: Logic<Subject>
     // MARK: Initializers
@@ -23,7 +23,7 @@ public struct Reward<Content, Subject> {
     ///   - contents: List of contents that compose this reward.
     ///   - accessLogic: Requirement for accessing this content.
     ///
-    public init(_ contents: Content, when accessLogic: Logic<Subject> = .closure(.always())) {
+    public init(_ contents: Contents, when accessLogic: Logic<Subject> = .closure(.always())) {
         self.contents = contents
         self.accessLogic = accessLogic
     }
@@ -37,14 +37,27 @@ public struct Reward<Content, Subject> {
     /// Reward available for a given subject.
     /// - Parameter subject: State to be evaluated.
     /// - Returns: Reward for the subject, `nil` when access is denied.
-    public func reward(for subject: Subject) -> Content? {
+    public func reward(for subject: Subject) -> Contents? {
         accessLogic(subject) ? contents : nil
     }
     /// Provides temporary access to a reward.
     /// - Parameter f: Closure with access to a reward.
     /// - Throws: `E` when the closure fails to execute.
-    public func temporaryAccess<E: Error>(_ f: @escaping (Content) throws(E) -> Void) throws(E) {
+    public func temporaryAccess<E: Error>(_ f: @escaping (Contents) throws(E) -> Void) throws(E) {
         try f(contents)
+    }
+}
+
+// MARK: DotSyntax
+public extension Reward {
+    func unlocked(_ content: Contents) -> Self { .init(content) }
+}
+
+// MARK: Self: Equatable
+extension Reward: Equatable where Contents: Equatable {
+    // swiftlint:disable:next missing_docs
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.contents == rhs.contents
     }
 }
 
