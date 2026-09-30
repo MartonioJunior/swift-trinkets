@@ -8,8 +8,8 @@
 import Custom
 import Functional
 
-public typealias Gate<T: Tracker, Grade> = RuleModify<T, Grade>
-public typealias RuleModify<Target, Output> = Rule<Target, Target, Output>
+public typealias Gate<T: Tracker, Progress> = RuleModify<T, Progress>
+public typealias RuleModify<Target, Grade> = Rule<Target, Target, Grade>
 
 public struct Rule<Subject, Target, Grade> {
     // MARK: Variables
@@ -50,7 +50,7 @@ public extension Rule where Grade == Bool {
         .init(grade.toggle().appraise, action)
     }
 
-    static func completed<M: Milestone>(
+    static func completed<M>(
         _ milestone: M,
         criteria: @escaping (Subject, M) -> Bool,
         action: @escaping (inout Target, Bool) -> Void,
