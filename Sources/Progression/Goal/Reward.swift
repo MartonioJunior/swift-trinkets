@@ -34,12 +34,6 @@ public struct Reward<Contents, Subject> {
     public func isObtainable(by subject: Subject) -> Bool {
         accessLogic(subject)
     }
-    /// Reward available for a given subject.
-    /// - Parameter subject: State to be evaluated.
-    /// - Returns: Reward for the subject, `nil` when access is denied.
-    public func reward(for subject: Subject) -> Contents? {
-        accessLogic(subject) ? contents : nil
-    }
     /// Provides temporary access to a reward.
     /// - Parameter f: Closure with access to a reward.
     /// - Throws: `E` when the closure fails to execute.
@@ -58,6 +52,14 @@ extension Reward: Equatable where Contents: Equatable {
     // swiftlint:disable:next missing_docs
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.contents == rhs.contents
+    }
+}
+
+// MARK: Self: ProgressionContent
+extension Reward: ProgressionContent {
+    // swiftlint:disable:next missing_docs
+    public func contents(for subject: Subject) -> Contents? {
+        accessLogic(subject) ? contents : nil
     }
 }
 

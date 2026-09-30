@@ -18,7 +18,7 @@ public struct Mission<Contents, Subject, Progress> {
     public func reward(for subject: Subject) -> Contents? {
         guard wasCompleted(by: subject) else { return nil }
 
-        return reward.reward(for: subject)
+        return reward.contents(for: subject)
     }
 }
 
@@ -27,6 +27,14 @@ extension Mission: Equatable where Contents: Equatable {
     // swiftlint:disable:next missing_docs
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.reward == rhs.reward
+    }
+}
+
+// MARK: Self: ProgressionContent
+extension Mission: ProgressionContent {
+    // swiftlint:disable:next missing_docs
+    public func contents(for subject: Subject) -> Contents? {
+        reward.contents(for: subject)
     }
 }
 

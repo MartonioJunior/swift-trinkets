@@ -43,6 +43,16 @@ public struct Locked<Contents, Subject> {
     }
 }
 
+// MARK: Self: ProgressionContent
+extension Locked: ProgressionContent {
+    // swiftlint:disable:next missing_docs
+    public func contents(for subject: Subject) -> Contents? {
+        guard writeLock(subject) else { return nil }
+
+        return contents
+    }
+}
+
 // MARK: Self: Unlockable
 extension Locked: Unlockable {
     // swiftlint:disable:next missing_docs
