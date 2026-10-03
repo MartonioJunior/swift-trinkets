@@ -104,19 +104,24 @@ extension Track: Selectable where Chunk: Selectable {
 extension Track: Sendable where Chunk: Sendable {}
 
 // MARK: Self.Chunk.Mask: Gamut
-public extension Track where Chunk.Mask: Gamut {
+public extension Track where Chunk.Mask: Gamut & Equatable, Chunk.Mask.Bound: Comparable {
     /// Attempts to append a chunk below other chunks, provided there's space for such.
     /// - Parameter chunk: Sampler to be added.
     mutating func fill(with chunk: Chunk) {
-        if chunks.contains(where: { $0.mask.envelops(chunk.mask) }) { return }
+        if chunks.contains(where: { $0.mask.isSubset(of: chunk.mask, on: \.gamut) }) { return }
 
         chunks.append(chunk)
     }
     /// Adds a chunk on top of the list, replacing any chunks it invalidates.
     /// - Parameter chunk: Block to be added.
     mutating func overwrite(with chunk: Chunk) {
-        chunks.removeAll { chunk.mask.envelops($0.mask) }
+        chunks.removeAll { chunk.mask.isSubset(of: $0.mask, on: \.gamut) }
 
         chunks.insert(chunk, at: 0)
     }
+}
+
+// MARK: Union (EX)
+public extension Union where A: Gamut, B: Gamut, A.Bound: Comparable {
+    var gamut: B { fatalError("New overlap has not been implemented yet!") }
 }
