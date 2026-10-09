@@ -1,13 +1,13 @@
 {
-  "originHash" : "b320aa4f0b7b18d6e8f7c3f77a94c2798d2d74d783788b777f205a2ff0d5f9ca",
+  "originHash" : "de0b7bc8520d62fa28d08878d95f0e5f0dc18d936ee9a8b3217771fc9bc16f07",
   "pins" : [
     {
       "identity" : "mathe",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MartonioJunior/Mathe",
       "state" : {
-        "revision" : "441b37ed9cd0c6f688ce2356934776a4b9803645",
-        "version" : "0.1.1"
+        "revision" : "ac77f59a31ee69c2169d7df6507544192fe60807",
+        "version" : "0.1.2"
       }
     },
     {
