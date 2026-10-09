@@ -7,6 +7,7 @@
 
 import Flow
 
+/// Data structure representing the progress in a turn-based system.
 public struct Turn<Model: TurnBased> {
     // MARK: Variables
     /// Current turn the system is in.

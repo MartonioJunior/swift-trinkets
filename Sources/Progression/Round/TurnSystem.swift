@@ -7,6 +7,9 @@
 
 import Flow
 
+/// Instance of a turn-based system.
+/// 
+/// Manages the entire lifecycle through a model, also keeping track of it's progress.
 public struct TurnSystem<Model: TurnBased> {
     // MARK: Variables
     /// Logic model managing the turns.
@@ -28,8 +31,8 @@ public struct TurnSystem<Model: TurnBased> {
     public mutating func advance(by tempo: Tempo<Int>) {
         instant = core.skip(tempo, from: instant)
     }
-
-    mutating func nextTurn() {
+    /// Moves the system forward to the next turn.
+    public mutating func nextTurn() {
         instant = core.nextTurn(after: instant)
     }
 }
