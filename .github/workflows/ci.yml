@@ -13,10 +13,10 @@ concurrency:
 
 jobs:
   build-macos:
-    name: Swift 6.3 on macOS
+    name: Swift 6.4 on macOS
     strategy:
       matrix:
-        swift: ["6.3"]
+        swift: ["6.4"]
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v6
@@ -46,7 +46,7 @@ jobs:
     name: Swift ${{ matrix.swift }} on Linux
     strategy:
       matrix:
-        swift: ["6.3"]
+        swift: ["6.4"]
     runs-on: ubuntu-latest
 
     steps:
@@ -79,7 +79,7 @@ jobs:
         run: swift test --skip-build --enable-code-coverage --parallel
   
   build-windows:
-    name: Swift 6.3 on Windows
+    name: Swift 6.4 on Windows
     runs-on: windows-latest
     timeout-minutes: 30
 
@@ -88,8 +88,8 @@ jobs:
       - name: Swift Install
         uses: compnerd/gha-setup-swift@main
         with:
-          swift-version: swift-6.3-release
-          swift-build: 6.3-RELEASE
+          swift-version: swift-6.4-release
+          swift-build: 6.4-RELEASE
       - name: Restore .build
         id: "restore-build"
         uses: actions/cache/restore@v5
@@ -109,7 +109,7 @@ jobs:
         run: swift test --skip-build --enable-code-coverage --parallel
 
   build-android:
-    name: Swift 6.3 on Android
+    name: Swift 6.4 on Android
     runs-on: ubuntu-latest
 
     steps:
