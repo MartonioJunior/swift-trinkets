@@ -20,15 +20,6 @@
       }
     },
     {
-      "identity" : "minimal",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/MartonioJunior/Minimal",
-      "state" : {
-        "revision" : "bf83940420f6403bf1644788e05ff61973654dcb",
-        "version" : "0.1.1"
-      }
-    },
-    {
       "identity" : "swift-case-paths",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-case-paths",
