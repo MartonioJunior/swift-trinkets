@@ -15,15 +15,6 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MartonioJunior/Minimal",
       "state" : {
-        "revision" : "147553f7d394d4feb4c9f8190a4d6637c3fc8406",
-        "version" : "0.1.0"
-      }
-    },
-    {
-      "identity" : "minimal",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/MartonioJunior/Minimal",
-      "state" : {
         "revision" : "bf83940420f6403bf1644788e05ff61973654dcb",
         "version" : "0.1.1"
       }
