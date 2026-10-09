@@ -5,6 +5,8 @@
 //  Created by Martônio Júnior on 09/02/25.
 //
 
+/// Short-hand alias for defining the efficiency of a conversion.
+public typealias Efficiency<Input, Output> = FractionUnit<Output, Input>
 /// Division between two units.
 /// - A: Numerator unit.
 /// - B: Denominator unit.
@@ -98,5 +100,10 @@ public extension Measurement where UnitType: Quantifiable, Value: FloatingPoint 
         rhs: Measurement<T, Value>
     ) -> Measurement<FractionUnit<UnitType, T>, Value> {
         lhs.per(rhs)
+    }
+    /// Flips around a fraction unit.
+    /// - Returns: Flipped fraction.
+    func flipped<A, B>() -> Measurement<FractionUnit<B, A>, Value> where UnitType == FractionUnit<A, B> {
+        .init(1 / value, unit.flipped)
     }
 }

@@ -115,3 +115,11 @@ public extension Tagged where Tag: StaticQuantifiable {
         convertNumerator(lhs).convertDenominator(rhs)
     }
 }
+
+public extension Tagged where Tag: StaticQuantifiable, RawValue: FloatingPoint {
+    /// Flips around a fraction unit.
+    /// - Returns: Flipped fraction.
+    func flipped<A, B>() -> Tagged<FractionUnit<B, A>, RawValue> where Tag == FractionUnit<A, B> {
+        map { 1 / $0 }.coerced(to: FractionUnit<B, A>.self)
+    }
+}
