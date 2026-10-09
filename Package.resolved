@@ -1,5 +1,5 @@
 {
-  "originHash" : "5a66b3108278787346d135307c58da33bb482b3af5241042d6da1ce4ff233da9",
+  "originHash" : "527c69e96fc59f4b583e3c94bb03fe71e7a467be3bc9227a7c470ebfcc1f65c8",
   "pins" : [
     {
       "identity" : "mathe",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "147553f7d394d4feb4c9f8190a4d6637c3fc8406",
         "version" : "0.1.0"
+      }
+    },
+    {
+      "identity" : "minimal",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MartonioJunior/Minimal",
+      "state" : {
+        "revision" : "bf83940420f6403bf1644788e05ff61973654dcb",
+        "version" : "0.1.1"
       }
     },
     {
@@ -71,6 +80,15 @@
       "state" : {
         "revision" : "322d9ffeeba85c9f7c4984b39422ec7cc3c56597",
         "version" : "1.1.1"
+      }
+    },
+    {
+      "identity" : "swift-issue-reporting",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-issue-reporting",
+      "state" : {
+        "revision" : "75b000cea2ca6d7527a57e1b9cc0bdf21a9abe9f",
+        "version" : "2.1.1"
       }
     },
     {
